@@ -1,0 +1,5 @@
+outs:
+- md5: 5b4e0ed65c25b51c23850cd035f02ff9
+  size: 5724107
+  hash: md5
+  path: flats.csv

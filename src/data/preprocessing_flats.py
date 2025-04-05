@@ -1,0 +1,227 @@
+import numpy as np
+import pandas as pd
+import os
+import re
+
+import src.utils as utils
+
+# Logging configuration
+logger = utils.configure_logger(__name__, log_file="data_preprocessing.log")
+
+
+def load_data(file_path: str) -> pd.DataFrame:
+    try:
+        logger.debug("Loading data from %s", file_path)
+        return pd.read_csv(file_path)
+    except Exception as e:
+        logger.error("Error loading data: %s", e)
+        return pd.DataFrame()
+
+def drop_columns(df: pd.DataFrame) -> pd.DataFrame:
+    try:
+        logger.debug("Dropping columns")
+        columns_to_drop = ['link', 'property_id']
+        df.drop(columns=columns_to_drop, inplace=True)
+        return df
+    except Exception as e:
+        logger.error("Error dropping columns: %s", e)
+        return pd.DataFrame()
+
+def rename_columns(df: pd.DataFrame) -> pd.DataFrame:
+    try:
+        logger.debug("Renaming columns")
+        df.rename(columns={'area': 'price_per_sqft'}, inplace=True)
+        return df
+    except Exception as e:
+        logger.error("Error renaming columns: %s", e)
+        return pd.DataFrame()
+
+def clean_society(df: pd.DataFrame) -> pd.DataFrame:
+    try:
+        logger.debug("Cleaning society column")
+        df['society'] = df['society'].apply(
+            lambda name: re.sub(r'\d+(.\d+)?\s?★', '', str(name)).strip()
+        ).str.lower()
+        return df
+    except Exception as e:
+        logger.error("Error cleaning society column: %s", e)
+        return pd.DataFrame()
+
+
+def process_price(df: pd.DataFrame) -> pd.DataFrame:
+    logger.debug("Processing price column")
+    try:
+        logger.debug("Filtering out 'Price on Request'")
+        df = df[df['price'] != 'Price on Request'].copy()
+
+        def _treat_price(x):
+            try:
+                if isinstance(x, float):
+                    return x
+                amount, unit = x
+                if unit == 'Lac':
+                    return round(float(amount) / 100, 2)
+                return round(float(amount), 2)
+            except Exception as e_inner:
+                logger.warning(f"Failed to process price entry {x}: {e_inner}")
+                return None
+
+        logger.debug("Extracting price values")
+        df['price'] = df['price'].str.split(' ').apply(_treat_price)
+
+        return df
+    except Exception as e:
+        logger.error("Error processing price column: %s", e)
+        return pd.DataFrame()
+
+def process_price_per_sqft(df: pd.DataFrame) -> pd.DataFrame:
+    try:
+        logger.debug("Processing price_per_sqft column")
+        df['price_per_sqft'] = (
+            df['price_per_sqft']
+            .str.split('/').str.get(0)
+            .str.replace('₹', '')
+            .str.replace(',', '')
+            .str.strip()
+            .astype('float')
+        )
+        return df
+    except Exception as e:
+        logger.error("Error processing price_per_sqft: %s", e)
+        return pd.DataFrame()
+
+def remove_bedroom_nulls(df: pd.DataFrame) -> pd.DataFrame:
+    try:
+        logger.debug("Removing nulls in bedRoom")
+        df = df[~df['bedRoom'].isnull()]
+        return df
+    except Exception as e:
+        logger.error("Error removing bedroom nulls: %s", e)
+        return pd.DataFrame()
+
+def convert_bedroom(df: pd.DataFrame) -> pd.DataFrame:
+    try:
+        logger.debug("Converting bedRoom to int")
+        df = df.copy()
+        df['bedRoom'] = df['bedRoom'].str.split(' ').str.get(0).astype('int')
+        return df
+    except Exception as e:
+        logger.error("Error converting bedRoom: %s", e)
+        return pd.DataFrame()
+
+def process_bedroom(df: pd.DataFrame) -> pd.DataFrame:
+    df = remove_bedroom_nulls(df)
+    df = convert_bedroom(df)
+    return df
+
+def convert_bathroom(df: pd.DataFrame) -> pd.DataFrame:
+    try:
+        logger.debug("Converting bathroom to int")
+        df['bathroom'] = df['bathroom'].str.split(' ').str.get(0).astype('int')
+        return df
+    except Exception as e:
+        logger.error("Error converting bathroom: %s", e)
+        return pd.DataFrame()
+
+def process_balcony(df: pd.DataFrame) -> pd.DataFrame:
+    try:
+        logger.debug("Processing balcony column")
+        df['balcony'] = (
+            df['balcony']
+            .str.split(' ')
+            .str.get(0)
+            .str.replace('No', '0')
+        )
+        return df
+    except Exception as e:
+        logger.error("Error processing balcony: %s", e)
+        return pd.DataFrame()
+
+def handle_additional_room(df: pd.DataFrame) -> pd.DataFrame:
+    try:
+        logger.debug("Handling additionalRoom column")
+        df = df.copy()
+
+        df['additionalRoom'] = df['additionalRoom'].fillna('not available')
+        df['additionalRoom'] = df['additionalRoom'].str.lower()
+
+        return df
+    except Exception as e:
+        logger.error("Error handling additionalRoom: %s", e)
+        return pd.DataFrame()
+
+def process_floor_num(df: pd.DataFrame) -> pd.DataFrame:
+    try:
+        logger.debug("Processing floorNum column")
+        df['floorNum'] = (
+            df['floorNum']
+            .str.split(' ')
+            .str.get(0)
+            .replace('Ground', '0')
+            .replace('Basement', '-1')
+            .replace('Lower', '0')
+            .str.extract(r'(\d+)')
+        )
+        return df
+    except Exception as e:
+        logger.error("Error processing floorNum: %s", e)
+        return pd.DataFrame()
+
+def handle_facing(df: pd.DataFrame) -> pd.DataFrame:
+    try:
+        logger.debug("Handling facing column")
+        df["facing"] = df['facing'].fillna('NA')
+        return df
+    except Exception as e:
+        logger.error("Error handling facing: %s", e)
+        return pd.DataFrame()
+
+def calculate_area(df: pd.DataFrame) -> pd.DataFrame:
+    try:
+        logger.debug("Calculating area column")
+        df.insert(loc=4, column='area', value=round((df['price'] * 10000000) / df['price_per_sqft']))
+        return df
+    except Exception as e:
+        logger.error("Error calculating area: %s", e)
+        return pd.DataFrame()
+
+def add_property_type(df: pd.DataFrame) -> pd.DataFrame:
+    try:
+        logger.debug("Adding property_type column")
+        df.insert(loc=1, column='property_type', value='flat')
+        return df
+    except Exception as e:
+        logger.error("Error adding property_type: %s", e)
+        return pd.DataFrame()
+
+
+if __name__ == "__main__":
+    try:
+        data_path = os.path.join("data", "raw")
+        file_path = os.path.join(data_path, "flats.csv")
+        df = load_data(file_path)
+        if df.empty:
+            raise ValueError("Data loading failed: Empty DataFrame")
+
+        # Pipeline
+        df = (
+            df.pipe(drop_columns)
+              .pipe(rename_columns)
+              .pipe(clean_society)
+              .pipe(process_price)
+              .pipe(process_price_per_sqft)
+              .pipe(process_bedroom)
+              .pipe(convert_bathroom)
+              .pipe(process_balcony)
+              .pipe(handle_additional_room)
+              .pipe(process_floor_num)
+              .pipe(handle_facing)
+              .pipe(calculate_area)
+              .pipe(add_property_type)
+        )
+
+        data_path = os.path.join("data", "interim")
+        utils.save_data(df, data_path, "flats.csv", logger=logger)
+
+    except Exception as main_e:
+        logger.error("Pipeline failed: %s", main_e)
