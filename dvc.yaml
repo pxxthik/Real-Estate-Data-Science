@@ -13,3 +13,11 @@ stages:
     - data/raw/houses.csv
     outs:
     - data/interim/houses.csv
+  merge_flats_and_houses:
+    cmd: python -m src.data.merge_flats_and_houses
+    deps:
+    - src/data/merge_flats_and_houses.py
+    - data/raw/flats.csv
+    - data/raw/houses.csv
+    outs:
+    - data/interim/gurgaon_properties.csv

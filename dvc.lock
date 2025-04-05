@@ -32,3 +32,23 @@ stages:
       hash: md5
       md5: a7092f65c8c6f2aaa0c4ae88189ffc90
       size: 1669348
+  merge_flats_and_houses:
+    cmd: python -m src.data.merge_flats_and_houses
+    deps:
+    - path: data/raw/flats.csv
+      hash: md5
+      md5: 5b4e0ed65c25b51c23850cd035f02ff9
+      size: 5724107
+    - path: data/raw/houses.csv
+      hash: md5
+      md5: 4681f7c5c507e4195eeba43676843863
+      size: 2000313
+    - path: src/data/merge_flats_and_houses.py
+      hash: md5
+      md5: 95e8f355323708faecafad98af8c375a
+      size: 1382
+    outs:
+    - path: data/interim/gurgaon_properties.csv
+      hash: md5
+      md5: ba79d63c2b779896701b10008aa96acc
+      size: 6827515
