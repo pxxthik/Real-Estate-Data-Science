@@ -6,7 +6,7 @@ import os
 import src.utils as utils
 
 # Logging configuration
-logger = utils.configure_logger(__name__, log_file="data_preprocessing.log")
+logger = utils.configure_logger(__name__, log_file="merge_flats_and_houses.log")
 
 
 def load_data(file_path: str) -> pd.DataFrame:

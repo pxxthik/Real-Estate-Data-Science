@@ -21,3 +21,10 @@ stages:
     - data/raw/houses.csv
     outs:
     - data/interim/gurgaon_properties.csv
+  preprocessing_level_2:
+    cmd: python -m src.data.preprocessing_level_2
+    deps:
+    - src/data/preprocessing_level_2.py
+    - data/interim/gurgaon_properties.csv
+    outs:
+    - data/interim/gurgaon_properties_cleaned_v1.csv
