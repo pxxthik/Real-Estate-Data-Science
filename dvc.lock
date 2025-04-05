@@ -3,6 +3,10 @@ stages:
   preprocessing_flats:
     cmd: python -m src.data.preprocessing_flats
     deps:
+    - path: data/raw/flats.csv
+      hash: md5
+      md5: 5b4e0ed65c25b51c23850cd035f02ff9
+      size: 5724107
     - path: src/data/preprocessing_flats.py
       hash: md5
       md5: 4fae08faa3cae64b1422b539193d76c8
@@ -12,3 +16,19 @@ stages:
       hash: md5
       md5: 7fafddf7f160febbc67110cc0e66dd85
       size: 5152858
+  preprocessing_houses:
+    cmd: python -m src.data.preprocessing_houses
+    deps:
+    - path: data/raw/houses.csv
+      hash: md5
+      md5: 4681f7c5c507e4195eeba43676843863
+      size: 2000313
+    - path: src/data/preprocessing_houses.py
+      hash: md5
+      md5: 429aa6eaa809c93b1d9c16a8d3fffa50
+      size: 7438
+    outs:
+    - path: data/interim/houses.csv
+      hash: md5
+      md5: a7092f65c8c6f2aaa0c4ae88189ffc90
+      size: 1669348
