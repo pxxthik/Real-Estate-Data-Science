@@ -147,28 +147,53 @@ stages:
       hash: md5
       md5: 69d3c0f709fed118f343d948883d6cd0
       size: 1463
+    params:
+      params.yaml:
+        split_data.random_state: 123
+        split_data.test_size: 0.2
     outs:
     - path: data/processed/test.csv
       hash: md5
-      md5: 990e8c05d6fe247c36e94afd4c37df1d
-      size: 50947
+      md5: a22f8a2a0d9f4159d7e3be29d1089874
+      size: 50922
     - path: data/processed/train.csv
       hash: md5
-      md5: 3eec8a27938bd7ca9c4235a89090b25e
-      size: 203086
+      md5: d00c8511153777e44349961390ea4d93
+      size: 203111
   model_building:
     cmd: python -m src.models.model_building
     deps:
     - path: data/processed/train.csv
       hash: md5
-      md5: 3eec8a27938bd7ca9c4235a89090b25e
-      size: 203086
+      md5: d00c8511153777e44349961390ea4d93
+      size: 203111
     - path: src/models/model_building.py
       hash: md5
-      md5: 0f7070978776f1993f7801278a8c8ab1
-      size: 2677
+      md5: dd086ce8040792c6c9bd0b11f68365fe
+      size: 2820
+    params:
+      params.yaml:
+        model_building.max_depth: 20
+        model_building.max_features: sqrt
+        model_building.max_samples: 1.0
+        model_building.n_estimators: 300
     outs:
     - path: models/real_estate_predictor.pkl
       hash: md5
-      md5: 9f92870dade52d9cc91f2f50a5ae4af7
-      size: 72879124
+      md5: d9b4397549ffc1ad0a7a8e5d9c6a7547
+      size: 73242191
+  model_evaluation:
+    cmd: python -m src.models.model_evaluation
+    deps:
+    - path: data/processed/test.csv
+      hash: md5
+      md5: a22f8a2a0d9f4159d7e3be29d1089874
+      size: 50922
+    - path: models/real_estate_predictor.pkl
+      hash: md5
+      md5: d9b4397549ffc1ad0a7a8e5d9c6a7547
+      size: 73242191
+    - path: src/models/model_evaluation.py
+      hash: md5
+      md5: 370dd79e675065a98a79b3db7a46f278
+      size: 2017

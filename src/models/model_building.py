@@ -55,7 +55,7 @@ if __name__ == "__main__":
                 ('num', StandardScaler(), ['bedRoom', 'bathroom', 'built_up_area', 'servant room', 'store room']),
                 ('cat', OrdinalEncoder(), columns_to_encode),
                 ('cat1', OneHotEncoder(drop='first', sparse_output=False), ['agePossession']),
-                ('target_enc', ce.TargetEncoder(), ['sector'])
+                ('target_enc', ce.TargetEncoder(handle_unknown='ignore'), ['sector'])
             ],
             remainder='passthrough'
         )

@@ -62,6 +62,9 @@ stages:
     deps:
     - src/features/split_data.py
     - data/processed/gurgaon_properties_post_feature_selection.csv
+    params:
+    - split_data.test_size
+    - split_data.random_state
     outs:
     - data/processed/train.csv
     - data/processed/test.csv
@@ -70,5 +73,23 @@ stages:
     deps:
     - src/models/model_building.py
     - data/processed/train.csv
+    params:
+    - model_building.n_estimators
+    - model_building.max_depth
+    - model_building.max_samples
+    - model_building.max_features
     outs:
     - models/real_estate_predictor.pkl
+  model_evaluation:
+    cmd: python -m src.models.model_evaluation
+    deps:
+    - src/models/model_evaluation.py
+    - data/processed/test.csv
+    - models/real_estate_predictor.pkl
+params:
+- dvclive/params.yaml
+metrics:
+- dvclive/metrics.json
+plots:
+- dvclive/plots/metrics:
+    x: step

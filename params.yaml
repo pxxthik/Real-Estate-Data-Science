@@ -1,6 +1,6 @@
 split_data:
   test_size: 0.2
-  random_state: 42
+  random_state: 123
 model_building:
   n_estimators: 300
   max_depth: 20
