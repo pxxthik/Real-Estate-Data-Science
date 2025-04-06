@@ -136,3 +136,39 @@ stages:
       hash: md5
       md5: afa94fd133c905f417597fae1a37f39a
       size: 253881
+  split_data:
+    cmd: python -m src.features.split_data
+    deps:
+    - path: data/processed/gurgaon_properties_post_feature_selection.csv
+      hash: md5
+      md5: afa94fd133c905f417597fae1a37f39a
+      size: 253881
+    - path: src/features/split_data.py
+      hash: md5
+      md5: 69d3c0f709fed118f343d948883d6cd0
+      size: 1463
+    outs:
+    - path: data/processed/test.csv
+      hash: md5
+      md5: 990e8c05d6fe247c36e94afd4c37df1d
+      size: 50947
+    - path: data/processed/train.csv
+      hash: md5
+      md5: 3eec8a27938bd7ca9c4235a89090b25e
+      size: 203086
+  model_building:
+    cmd: python -m src.models.model_building
+    deps:
+    - path: data/processed/train.csv
+      hash: md5
+      md5: 3eec8a27938bd7ca9c4235a89090b25e
+      size: 203086
+    - path: src/models/model_building.py
+      hash: md5
+      md5: 0f7070978776f1993f7801278a8c8ab1
+      size: 2677
+    outs:
+    - path: models/real_estate_predictor.pkl
+      hash: md5
+      md5: 9f92870dade52d9cc91f2f50a5ae4af7
+      size: 72879124

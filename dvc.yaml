@@ -57,3 +57,18 @@ stages:
     - data/interim/gurgaon_properties_missing_value_imputation.csv
     outs:
     - data/processed/gurgaon_properties_post_feature_selection.csv
+  split_data:
+    cmd: python -m src.features.split_data
+    deps:
+    - src/features/split_data.py
+    - data/processed/gurgaon_properties_post_feature_selection.csv
+    outs:
+    - data/processed/train.csv
+    - data/processed/test.csv
+  model_building:
+    cmd: python -m src.models.model_building
+    deps:
+    - src/models/model_building.py
+    - data/processed/train.csv
+    outs:
+    - models/real_estate_predictor.pkl
