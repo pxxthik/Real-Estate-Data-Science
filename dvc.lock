@@ -88,3 +88,19 @@ stages:
       hash: md5
       md5: 274db644cb000da19d25b968061e12e6
       size: 630461
+  outlier_treatment:
+    cmd: python -m src.features.outlier_treatment
+    deps:
+    - path: data/interim/gurgaon_properties_cleaned_v2.csv
+      hash: md5
+      md5: 274db644cb000da19d25b968061e12e6
+      size: 630461
+    - path: src/features/outlier_treatment.py
+      hash: md5
+      md5: f6475df5d246ec33889318108004fa35
+      size: 4118
+    outs:
+    - path: data/interim/gurgaon_properties_outlier_treated.csv
+      hash: md5
+      md5: 80b62f7de4c623857f92b685f1921694
+      size: 631467

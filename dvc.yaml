@@ -36,3 +36,10 @@ stages:
     - data/raw/appartments.csv
     outs:
     - data/interim/gurgaon_properties_cleaned_v2.csv
+  outlier_treatment:
+    cmd: python -m src.features.outlier_treatment
+    deps:
+    - src/features/outlier_treatment.py
+    - data/interim/gurgaon_properties_cleaned_v2.csv
+    outs:
+    - data/interim/gurgaon_properties_outlier_treated.csv
