@@ -8,6 +8,7 @@ import src.utils as utils
 # Logging configuration
 logger = utils.configure_logger(__name__, log_file="splitting_data.log")
 
+
 def load_data(file_path: str) -> pd.DataFrame:
     try:
         logger.debug("Loading Data")
@@ -18,6 +19,7 @@ def load_data(file_path: str) -> pd.DataFrame:
         logger.error(f"Error loading data: {e}")
         return pd.DataFrame()
 
+
 if __name__ == "__main__":
     try:
         # loading params
@@ -25,13 +27,17 @@ if __name__ == "__main__":
 
         # load data
         data_path = os.path.join("data", "processed")
-        file_path = os.path.join(data_path, "gurgaon_properties_post_feature_selection.csv")
+        file_path = os.path.join(
+            data_path, "gurgaon_properties_post_feature_selection.csv"
+        )
         df = load_data(file_path)
         if df.empty:
             raise ValueError("Data loading failed: Empty DataFrame")
-        
+
         # split data into train and test
-        train, test = train_test_split(df, test_size=params["test_size"], random_state=params["random_state"])
+        train, test = train_test_split(
+            df, test_size=params["test_size"], random_state=params["random_state"]
+        )
 
         # save train and test data
         data_path = os.path.join("data", "processed")

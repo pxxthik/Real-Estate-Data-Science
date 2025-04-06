@@ -17,6 +17,7 @@ import src.utils as utils
 # Logging configuration
 logger = utils.configure_logger(__name__, log_file="model_building.log")
 
+
 def load_data(file_path: str) -> pd.DataFrame:
     try:
         logger.debug("Loading Data")
@@ -39,38 +40,57 @@ if __name__ == "__main__":
         df = load_data(file_path)
         if df.empty:
             raise ValueError("Data loading failed: Empty DataFrame")
-        
-        X = df.drop(columns=['price'])
-        y = df['price']
+
+        X = df.drop(columns=["price"])
+        y = df["price"]
 
         # Applying log transform
         logger.info("Applying log transform")
         y_transformed = np.log1p(y)
 
-        columns_to_encode = ['property_type', 'sector', 'balcony', 'agePossession', 'furnishing_type', 'luxury_category', 'floor_category']
+        columns_to_encode = [
+            "property_type",
+            "sector",
+            "balcony",
+            "agePossession",
+            "furnishing_type",
+            "luxury_category",
+            "floor_category",
+        ]
 
         # Create the pipeline
         preprocessor = ColumnTransformer(
             transformers=[
-                ('num', StandardScaler(), ['bedRoom', 'bathroom', 'built_up_area', 'servant room', 'store room']),
-                ('cat', OrdinalEncoder(), columns_to_encode),
-                ('cat1', OneHotEncoder(drop='first', sparse_output=False), ['agePossession']),
-                ('target_enc', ce.TargetEncoder(handle_unknown='ignore'), ['sector'])
+                (
+                    "num",
+                    StandardScaler(),
+                    [
+                        "bedRoom",
+                        "bathroom",
+                        "built_up_area",
+                        "servant room",
+                        "store room",
+                    ],
+                ),
+                ("cat", OrdinalEncoder(), columns_to_encode),
+                (
+                    "cat1",
+                    OneHotEncoder(drop="first", sparse_output=False),
+                    ["agePossession"],
+                ),
+                ("target_enc", ce.TargetEncoder(handle_unknown="ignore"), ["sector"]),
             ],
-            remainder='passthrough'
+            remainder="passthrough",
         )
 
         model = RandomForestRegressor(
             n_estimators=params["n_estimators"],
             max_depth=params["max_depth"],
             max_samples=params["max_samples"],
-            max_features=params["max_features"]
+            max_features=params["max_features"],
         )
 
-        pipeline = Pipeline([
-            ("preprocessor", preprocessor),
-            ("regressor", model)
-        ])
+        pipeline = Pipeline([("preprocessor", preprocessor), ("regressor", model)])
 
         logger.info("Fitting the model")
         pipeline.fit(X, y_transformed)
@@ -79,7 +99,7 @@ if __name__ == "__main__":
         model_path = os.path.join("models")
         os.makedirs(model_path, exist_ok=True)
 
-        with open(os.path.join(model_path, "real_estate_predictor.pkl"), 'wb') as file:
+        with open(os.path.join(model_path, "real_estate_predictor.pkl"), "wb") as file:
             pickle.dump(pipeline, file)
 
     except Exception as e:

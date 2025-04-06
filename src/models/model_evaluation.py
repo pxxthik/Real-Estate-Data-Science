@@ -12,6 +12,7 @@ import src.utils as utils
 # Logging configuration
 logger = utils.configure_logger(__name__, log_file="model_evaluation.log")
 
+
 def load_data(file_path: str) -> pd.DataFrame:
     try:
         logger.debug("Loading Data")

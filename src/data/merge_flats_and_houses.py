@@ -16,7 +16,8 @@ def load_data(file_path: str) -> pd.DataFrame:
     except Exception as e:
         logger.error("Error loading data: %s", e)
         return pd.DataFrame()
-    
+
+
 if __name__ == "__main__":
     try:
         data_path = os.path.join("data", "interim")
@@ -31,7 +32,7 @@ if __name__ == "__main__":
         merged_df = pd.concat([flats_df, houses_df], ignore_index=True)
 
         # Shuffle the merged dataframe
-        merged_df = merged_df.sample(merged_df.shape[0],ignore_index=True)
+        merged_df = merged_df.sample(merged_df.shape[0], ignore_index=True)
 
         # Save the merged dataframe
         data_path = os.path.join("data", "interim")
