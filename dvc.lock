@@ -120,3 +120,19 @@ stages:
       hash: md5
       md5: 2384d7555685d698587b0ba8cb6f7c06
       size: 337084
+  feature_selection:
+    cmd: python -m src.features.feature_selection
+    deps:
+    - path: data/interim/gurgaon_properties_missing_value_imputation.csv
+      hash: md5
+      md5: 2384d7555685d698587b0ba8cb6f7c06
+      size: 337084
+    - path: src/features/feature_selection.py
+      hash: md5
+      md5: 4a4c58755485432a6745f2015d0b923b
+      size: 2748
+    outs:
+    - path: data/processed/gurgaon_properties_post_feature_selection.csv
+      hash: md5
+      md5: afa94fd133c905f417597fae1a37f39a
+      size: 253881

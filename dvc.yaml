@@ -50,3 +50,10 @@ stages:
     - data/interim/gurgaon_properties_outlier_treated.csv
     outs:
     - data/interim/gurgaon_properties_missing_value_imputation.csv
+  feature_selection:
+    cmd: python -m src.features.feature_selection
+    deps:
+    - src/features/feature_selection.py
+    - data/interim/gurgaon_properties_missing_value_imputation.csv
+    outs:
+    - data/processed/gurgaon_properties_post_feature_selection.csv
