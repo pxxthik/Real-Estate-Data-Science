@@ -68,3 +68,23 @@ stages:
       hash: md5
       md5: 546fcbe21a83d75d6d8ff6d1c9e0874c
       size: 3847283
+  feature_engineering:
+    cmd: python -m src.features.feature_engineering
+    deps:
+    - path: data/interim/gurgaon_properties_cleaned_v1.csv
+      hash: md5
+      md5: 546fcbe21a83d75d6d8ff6d1c9e0874c
+      size: 3847283
+    - path: data/raw/appartments.csv
+      hash: md5
+      md5: 0973dd4bd85442c26003fb77c63f3544
+      size: 272474
+    - path: src/features/feature_engineering.py
+      hash: md5
+      md5: 343927c6a25d935d884b8ea8594663cb
+      size: 10451
+    outs:
+    - path: data/interim/gurgaon_properties_cleaned_v2.csv
+      hash: md5
+      md5: 274db644cb000da19d25b968061e12e6
+      size: 630461

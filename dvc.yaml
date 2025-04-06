@@ -28,3 +28,11 @@ stages:
     - data/interim/gurgaon_properties.csv
     outs:
     - data/interim/gurgaon_properties_cleaned_v1.csv
+  feature_engineering:
+    cmd: python -m src.features.feature_engineering
+    deps:
+    - src/features/feature_engineering.py
+    - data/interim/gurgaon_properties_cleaned_v1.csv
+    - data/raw/appartments.csv
+    outs:
+    - data/interim/gurgaon_properties_cleaned_v2.csv

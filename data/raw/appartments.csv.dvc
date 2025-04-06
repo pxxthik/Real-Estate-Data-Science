@@ -1,0 +1,5 @@
+outs:
+- md5: 0973dd4bd85442c26003fb77c63f3544
+  size: 272474
+  hash: md5
+  path: appartments.csv
