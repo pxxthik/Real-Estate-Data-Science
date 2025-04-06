@@ -6,7 +6,7 @@ import os
 import src.utils as utils
 
 # Logging configuration
-logger = utils.configure_logger(__name__, log_file="feature_engineering.log")
+logger = utils.configure_logger(__name__, log_file="outlier_treatment.log")
 
 
 def load_data(file_path: str) -> pd.DataFrame:

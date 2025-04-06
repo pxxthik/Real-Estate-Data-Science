@@ -97,10 +97,26 @@ stages:
       size: 630461
     - path: src/features/outlier_treatment.py
       hash: md5
-      md5: f6475df5d246ec33889318108004fa35
-      size: 4118
+      md5: ac921a9e3154c5b9c164a97f5c4d9b7d
+      size: 4116
     outs:
     - path: data/interim/gurgaon_properties_outlier_treated.csv
       hash: md5
       md5: 80b62f7de4c623857f92b685f1921694
       size: 631467
+  missing_value_imputation:
+    cmd: python -m src.features.missing_value_imputation
+    deps:
+    - path: data/interim/gurgaon_properties_outlier_treated.csv
+      hash: md5
+      md5: 80b62f7de4c623857f92b685f1921694
+      size: 631467
+    - path: src/features/missing_value_imputation.py
+      hash: md5
+      md5: 7253caf2e25c3da6646567e87354624e
+      size: 5487
+    outs:
+    - path: data/interim/gurgaon_properties_missing_value_imputation.csv
+      hash: md5
+      md5: 2384d7555685d698587b0ba8cb6f7c06
+      size: 337084
