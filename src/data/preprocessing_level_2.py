@@ -114,13 +114,6 @@ def process_sector(data: pd.DataFrame) -> pd.DataFrame:
         df["sector"] = df["sector"].str.replace("sector 2 extension", "sector 2")
         df["sector"] = df["sector"].str.replace("sector 36 sohna road", "sector 36")
 
-        df.loc[955, "sector"] = "sector 37"
-        df.loc[2800, "sector"] = "sector 92"
-        df.loc[2838, "sector"] = "sector 90"
-        df.loc[2857, "sector"] = "sector 76"
-
-        df.loc[[311, 1486, 3040, 3875], "sector"] = "sector 110"
-
         return df
 
     except Exception as e:
