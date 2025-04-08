@@ -14,19 +14,6 @@ import src.utils as utils
 logger = utils.configure_logger(__name__, log_file="feature_engineering.log")
 
 
-def load_data(file_path: str) -> pd.DataFrame:
-    try:
-        logger.debug("Loading Data")
-        df = pd.read_csv(file_path)
-        return df
-    except FileNotFoundError as e:
-        logger.error(f"Data file not found: {e}")
-        return pd.DataFrame()
-    except Exception as e:
-        logger.error(f"Error loading data: {e}")
-        return pd.DataFrame()
-
-
 # This function extracts the Super Built up area
 def get_super_built_up_area(text):
     match = re.search(r"Super Built up area (\d+\.?\d*)", text)
@@ -264,7 +251,7 @@ def process_features(data: pd.DataFrame) -> pd.DataFrame:
     df = data.copy()
     try:
 
-        app_df = load_data(os.path.join("data", "raw", "appartments.csv"))
+        app_df = utils.load_data(os.path.join("data", "raw", "appartments.csv"), logger)
         app_df["PropertyName"] = app_df["PropertyName"].str.lower()
 
         temp_df = df[df["features"].isnull()]
@@ -307,7 +294,7 @@ if __name__ == "__main__":
     data_path = os.path.join("data", "interim")
     file_path = os.path.join(data_path, "gurgaon_properties_cleaned_v1.csv")
 
-    df = load_data(file_path)
+    df = utils.load_data(file_path, logger)
     if df.empty:
         raise ValueError("Data loading failed: Empty DataFrame")
 

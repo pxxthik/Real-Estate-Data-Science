@@ -9,15 +9,6 @@ import src.utils as utils
 logger = utils.configure_logger(__name__, log_file="preprocessing_l2.log")
 
 
-def load_data(file_path: str) -> pd.DataFrame:
-    try:
-        logger.debug("Loading data from %s", file_path)
-        return pd.read_csv(file_path)
-    except Exception as e:
-        logger.error("Error loading data: %s", e)
-        return pd.DataFrame()
-
-
 def process_sector(data: pd.DataFrame) -> pd.DataFrame:
     df = data.copy()
     try:
@@ -125,7 +116,7 @@ if __name__ == "__main__":
     try:
         data_path = os.path.join("data", "interim")
         file_path = os.path.join(data_path, "gurgaon_properties.csv")
-        df = load_data(file_path)
+        df = utils.load_data(file_path, logger)
         if df.empty:
             raise ValueError("Data loading failed: Empty DataFrame")
 

@@ -9,17 +9,6 @@ import src.utils as utils
 # Logging configuration
 logger = utils.configure_logger(__name__, log_file="data_viz.log")
 
-
-def load_data(file_path: str) -> pd.DataFrame:
-    try:
-        logger.debug("Loading Data")
-        df = pd.read_csv(file_path)
-        logger.info("Data loaded successfully")
-        return df
-    except Exception as e:
-        logger.error(f"Error loading data: {e}")
-        return pd.DataFrame()
-
 def extract_latlong(df: pd.DataFrame) -> pd.DataFrame:
     try:
         logger.debug("Extracting latlong")
@@ -36,7 +25,7 @@ def merge_latlong(df: pd.DataFrame) -> pd.DataFrame:
         # load latlong
         data_path = os.path.join("data", "raw")
         file_path = os.path.join(data_path, "latlong.csv")
-        latlong = load_data(file_path)
+        latlong = utils.load_data(file_path, logger)
 
         # extract latlong
         latlong = extract_latlong(latlong)
@@ -54,7 +43,7 @@ if __name__ == "__main__":
         # load data
         data_path = os.path.join("data", "interim")
         file_path = os.path.join(data_path, "gurgaon_properties_missing_value_imputation.csv")
-        df = load_data(file_path)
+        df = utils.load_data(file_path, logger)
         if df.empty:
             raise ValueError("Data loading failed: Empty DataFrame")
         
@@ -68,7 +57,7 @@ if __name__ == "__main__":
         # Load gurgaon properties
         data_path = os.path.join("data", "interim")
         file_path = os.path.join(data_path, "gurgaon_properties.csv")
-        df1 = load_data(file_path)
+        df1 = utils.load_data(file_path, logger)
         if df1.empty:
             raise ValueError("Data loading failed: Empty DataFrame")
         

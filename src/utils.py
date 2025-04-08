@@ -5,6 +5,13 @@ import logging
 
 import yaml
 
+def load_data(file_path: str, logger: logging) -> pd.DataFrame:
+    try:
+        logger.debug("Loading data from %s", file_path)
+        return pd.read_csv(file_path)
+    except Exception as e:
+        logger.error("Error loading data: %s", e)
+        return pd.DataFrame()
 
 def load_params(params_filepath: str, section: str, logger: logging) -> dict:
     try:

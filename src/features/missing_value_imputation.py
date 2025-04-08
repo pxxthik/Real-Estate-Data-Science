@@ -9,16 +9,6 @@ import src.utils as utils
 logger = utils.configure_logger(__name__, log_file="missing_value_imputation.log")
 
 
-def load_data(file_path: str) -> pd.DataFrame:
-    try:
-        logger.debug("Loading Data")
-        df = pd.read_csv(file_path)
-        return df
-    except Exception as e:
-        logger.error(f"Error loading data: {e}")
-        return pd.DataFrame()
-
-
 def impute_builtUpArea(df: pd.DataFrame) -> pd.DataFrame:
     logger.debug("Imputing builtUpArea column")
     try:
@@ -157,7 +147,7 @@ if __name__ == "__main__":
         data_path = os.path.join("data", "interim")
         file_path = os.path.join(data_path, "gurgaon_properties_outlier_treated.csv")
 
-        df = load_data(file_path)
+        df = utils.load_data(file_path, logger)
 
         if df.empty:
             raise ValueError("Data loading failed: Empty DataFrame")

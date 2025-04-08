@@ -11,17 +11,6 @@ import src.utils as utils
 logger = utils.configure_logger(__name__, log_file="feature_selection.log")
 
 
-def load_data(file_path: str) -> pd.DataFrame:
-    try:
-        logger.debug("Loading Data")
-        df = pd.read_csv(file_path)
-        logger.info("Data loaded successfully")
-        return df
-    except Exception as e:
-        logger.error(f"Error loading data: {e}")
-        return pd.DataFrame()
-
-
 def categorize_luxury(score):
     if 0 <= score < 50:
         return "Low"
@@ -70,7 +59,7 @@ if __name__ == "__main__":
         file_path = os.path.join(
             data_path, "gurgaon_properties_missing_value_imputation.csv"
         )
-        df = load_data(file_path)
+        df = utils.load_data(file_path, logger)
         if df.empty:
             raise ValueError("Data loading failed: Empty DataFrame")
 
