@@ -8,12 +8,11 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 
 st.set_page_config(page_title="Plotting Demo")
-st.set_option('deprecation.showPyplotGlobalUse', False)
 
 st.title('Analytics')
 
-new_df = pd.read_csv('datasets/data_viz1.csv')
-wordcloud_df = pickle.load(open('datasets/wordcloud_df.pkl','rb'))
+new_df = pd.read_csv('models/data_viz1.csv')
+wordcloud_df = pickle.load(open('models/wordcloud_df.pkl','rb'))
 
 def get_word_cloud(df, sector):
     if sector != "Overall":
@@ -40,11 +39,11 @@ wordcloud = WordCloud(width = 800, height = 800,
                       stopwords = set(['s']),  # Any stopwords you'd like to exclude
                       min_font_size = 10).generate(get_word_cloud(wordcloud_df, selected_sector))
 
-plt.figure(figsize = (8, 8), facecolor = None)
+fig_wc = plt.figure(figsize = (8, 8), facecolor = None)
 plt.imshow(wordcloud, interpolation='bilinear')
 plt.axis("off")
 plt.tight_layout(pad = 0)
-st.pyplot()
+st.pyplot(fig_wc)
 
 st.header('Area Vs Price')
 
