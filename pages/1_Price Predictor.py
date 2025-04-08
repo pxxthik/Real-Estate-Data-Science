@@ -5,10 +5,10 @@ import pandas as pd
 
 st.set_page_config(page_title="House Price Predictor")
 
-with open('df.pkl','rb') as file:
+with open('models/df.pkl','rb') as file:
     df = pickle.load(file)
 
-with open('pipeline.pkl','rb') as file:
+with open('models/real_estate_predictor.pkl','rb') as file:
     pipeline = pickle.load(file)
 
 st.title("🏘️ House Price Predictor")
@@ -39,7 +39,7 @@ with col1:
     property_age = st.selectbox('Property Age',sorted(df['agePossession'].unique().tolist()))
     servant_room = st.selectbox('Servant Room',["No", "Yes"])
 with col2:
-    built_up_area = float(st.number_input('Built Up Area'))
+    built_up_area = float(st.number_input('Built Up Area', value=1250))
     store_room = st.selectbox('Store Room',["No", "Yes"])
 
 col1, col2, col3 = st.columns(3)
@@ -65,8 +65,18 @@ if st.button('Predict'):
     one_df = pd.DataFrame(data, columns=columns)
     # predict
     base_price = np.expm1(pipeline.predict(one_df))[0]
-    low = base_price - 0.22
-    high = base_price + 0.22
+
+    def get_ci(price):
+        if price < 0.5:
+            return 0.05
+        elif price < 1:
+            return 0.12
+        else:
+            return 0.22
+    
+    ci = get_ci(base_price)
+    low = base_price - ci
+    high = base_price + ci
 
     # display
     st.write("### `The price is in between {} Cr and {} Cr`".format(round(low,2),round(high,2)))
