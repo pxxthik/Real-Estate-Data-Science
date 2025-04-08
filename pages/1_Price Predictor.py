@@ -15,6 +15,8 @@ st.title("🏘️ House Price Predictor")
 st.markdown("""---""")
 st.header('Enter your inputs')
 
+city = st.selectbox('Select a City', ["Gurgaon"])
+
 col1, col2 = st.columns(2)
 
 with col1:
