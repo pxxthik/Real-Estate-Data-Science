@@ -225,3 +225,39 @@ stages:
       hash: md5
       md5: aed753a013dae2d029f9e321a9b7f42b
       size: 638066
+  recommender:
+    cmd: python -m src.models.recommend
+    deps:
+    - path: data/raw/appartments.csv
+      hash: md5
+      md5: 0973dd4bd85442c26003fb77c63f3544
+      size: 272474
+    - path: src/models/recommend.py
+      hash: md5
+      md5: 60bb70c83c3523b949ed6c62bd47be6c
+      size: 1212
+    - path: src/models/recommender/cosine_sim1.py
+      hash: md5
+      md5: 5966d2e8007f1077fbb95447db808887
+      size: 905
+    - path: src/models/recommender/cosine_sim2.py
+      hash: md5
+      md5: ac5402cae55133657d7dbab78df50684
+      size: 4352
+    - path: src/models/recommender/cosine_sim3.py
+      hash: md5
+      md5: 35879005cd2eaafad6b1b9e5cc8922be
+      size: 3180
+    outs:
+    - path: models/recommend/cosine_sim1.pkl
+      hash: md5
+      md5: 827434d386cb68262c874c66708c714e
+      size: 484290
+    - path: models/recommend/cosine_sim2.pkl
+      hash: md5
+      md5: 6c91c5e0fb5c3f1830086d96bdcc9cb1
+      size: 484290
+    - path: models/recommend/cosine_sim3.pkl
+      hash: md5
+      md5: dc6f183b621121d016a8f51d13ec5300
+      size: 484290

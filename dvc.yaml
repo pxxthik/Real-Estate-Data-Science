@@ -96,6 +96,18 @@ stages:
     outs:
     - models/data_viz1.csv
     - models/wordcloud_df.pkl
+  recommender:
+    cmd: python -m src.models.recommend
+    deps:
+    - src/models/recommender/cosine_sim1.py
+    - src/models/recommender/cosine_sim2.py
+    - src/models/recommender/cosine_sim3.py
+    - src/models/recommend.py
+    - data/raw/appartments.csv
+    outs:
+    - models/recommend/cosine_sim1.pkl
+    - models/recommend/cosine_sim2.pkl
+    - models/recommend/cosine_sim3.pkl
 params:
 - dvclive/params.yaml
 metrics:
