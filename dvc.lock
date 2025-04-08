@@ -197,3 +197,31 @@ stages:
       hash: md5
       md5: dea8d49d3023f8a0c50dd452eddbef4e
       size: 2019
+  data_visualization:
+    cmd: python -m src.visualization.data_viz
+    deps:
+    - path: data/interim/gurgaon_properties.csv
+      hash: md5
+      md5: d10241df4156d67bca7b7f91b5b9e280
+      size: 6827515
+    - path: data/interim/gurgaon_properties_missing_value_imputation.csv
+      hash: md5
+      md5: cc7b94b9c58b4f2faea33bcc88ec3804
+      size: 368565
+    - path: data/raw/latlong.csv
+      hash: md5
+      md5: a61f87c5b2212a9edd4d7fc608cd8864
+      size: 4939
+    - path: src/visualization/data_viz.py
+      hash: md5
+      md5: 7805e8c28405d015f2be5b79b18b97d6
+      size: 2784
+    outs:
+    - path: models/data_viz1.csv
+      hash: md5
+      md5: 21fa9ae6f791fd336b6cb8e905b7dd43
+      size: 481559
+    - path: models/wordcloud_df.pkl
+      hash: md5
+      md5: a3736d710b28c49483355188b1e13a0c
+      size: 632844

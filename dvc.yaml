@@ -86,6 +86,16 @@ stages:
     - src/models/model_evaluation.py
     - data/processed/test.csv
     - models/real_estate_predictor.pkl
+  data_visualization:
+    cmd: python -m src.visualization.data_viz
+    deps:
+    - src/visualization/data_viz.py
+    - data/raw/latlong.csv
+    - data/interim/gurgaon_properties_missing_value_imputation.csv
+    - data/interim/gurgaon_properties.csv
+    outs:
+    - models/data_viz1.csv
+    - models/wordcloud_df.pkl
 params:
 - dvclive/params.yaml
 metrics:
