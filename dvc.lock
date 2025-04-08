@@ -169,8 +169,8 @@ stages:
       size: 228381
     - path: src/models/model_building.py
       hash: md5
-      md5: e4f22d2adffcfd6496e0b7edf8b550db
-      size: 3198
+      md5: b0632ba3babb7e07ada2390cbb03dab2
+      size: 3393
     params:
       params.yaml:
         model_building.max_depth: 20
@@ -180,8 +180,8 @@ stages:
     outs:
     - path: models/real_estate_predictor.pkl
       hash: md5
-      md5: 8dc2767e26a263d8234e5398b175e357
-      size: 73335713
+      md5: 0adb0f8bba4c1edf1b940c2e3c21173f
+      size: 73273968
   model_evaluation:
     cmd: python -m src.models.model_evaluation
     deps:
@@ -191,8 +191,8 @@ stages:
       size: 57150
     - path: models/real_estate_predictor.pkl
       hash: md5
-      md5: 8dc2767e26a263d8234e5398b175e357
-      size: 73335713
+      md5: 0adb0f8bba4c1edf1b940c2e3c21173f
+      size: 73273968
     - path: src/models/model_evaluation.py
       hash: md5
       md5: dea8d49d3023f8a0c50dd452eddbef4e

@@ -99,8 +99,13 @@ if __name__ == "__main__":
         model_path = os.path.join("models")
         os.makedirs(model_path, exist_ok=True)
 
+        logger.info("Saving the model")
         with open(os.path.join(model_path, "real_estate_predictor.pkl"), "wb") as file:
             pickle.dump(pipeline, file)
+        
+        logger.info("Saving artifact")
+        with open(os.path.join(model_path, "df.pkl"), "wb") as file:
+            pickle.dump(X, file)
 
     except Exception as e:
         logger.error(f"Error : {e}")
