@@ -5,11 +5,11 @@ import numpy as np
 
 st.set_page_config(page_title="Recommend Appartments")
 
-location_df = pickle.load(open('datasets/location_df.pkl','rb'))
+location_df = pickle.load(open('models/recommend/location_df.pkl','rb'))
 
-cosine_sim1 = pickle.load(open('datasets/cosine_sim1.pkl','rb'))
-cosine_sim2 = pickle.load(open('datasets/cosine_sim2.pkl','rb'))
-cosine_sim3 = pickle.load(open('datasets/cosine_sim3.pkl','rb'))
+cosine_sim1 = pickle.load(open('models/recommend/cosine_sim1.pkl','rb'))
+cosine_sim2 = pickle.load(open('models/recommend/cosine_sim2.pkl','rb'))
+cosine_sim3 = pickle.load(open('models/recommend/cosine_sim3.pkl','rb'))
 
 def recommend_properties_with_scores(property_name, top_n=5):
     cosine_sim_matrix = 0.5 * cosine_sim1 + 0.8 * cosine_sim2 + 1 * cosine_sim3
@@ -42,7 +42,7 @@ col1, col2 = st.columns(2)
 with col1:
     selected_location = st.selectbox('Location',sorted(location_df.columns.to_list()))
 with col2:
-    radius = st.number_input('Radius in Kms')
+    radius = st.number_input('Radius in Kms', value=5)
 
 if st.button('Search'):
     result_ser = location_df[location_df[selected_location] < radius*1000][selected_location].sort_values()
