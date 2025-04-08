@@ -245,6 +245,14 @@ def process_furnishDetails(data: pd.DataFrame) -> pd.DataFrame:
         df = df.iloc[:, :-18]
         df["furnishing_type"] = cluster_assignments
 
+        mapping = {
+            0: 'unfurnished',
+            1: 'semifurnished',
+            2: 'furnished'
+        }
+
+        df['furnishing_type'] = df['furnishing_type'].map(mapping)
+
         return df
     except Exception as e:
         logger.error(f"Error processing furnishDetails: {e}")
